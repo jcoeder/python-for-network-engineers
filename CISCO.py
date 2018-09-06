@@ -28,10 +28,16 @@ not_aes = cisco_cfg.find_objects_wo_child(r'^crypto map', r'set transform-set AE
 #    print(i)
 #print(not_aes)
 for list_entry in not_aes:
+    print(list_entry.text.strip())
     for child in list_entry.children:
+        if 'transform' in child.text:
+            print ('  ' + child.text.strip())
+            print()
+###same solution
         if 'transform' in child.text:
             match = re.search(r'set transform-set (.*)$', child.text)
             encryption = match.group(1)
     print ("{}".format(list_entry.text.strip()))
     print ("  set transform-set {}".format(encryption))
+    print()
 print()
