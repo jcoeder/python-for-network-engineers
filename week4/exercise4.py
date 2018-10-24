@@ -28,17 +28,17 @@ def send_command(cmd, expect):
     print PyExpect has timed out.
     '''
     try:
-        ssh_conn.sendline(cmd + '\n')
+        print('SENDING  "' + cmd + '"')
+        ssh_conn.sendline(cmd)
         ssh_conn.expect(expect)
-        time.sleep(3)
+        time.sleep(5)
+        print(ssh_conn.before.decode('utf-8', 'ignore') + ssh_conn.after.decode('utf-8', 'ignore'))
     except pexpect.TIMEOUT:
         print ('PyExpect has timed out')
 
 send_command('terminal length 0', '#')
 send_command('configure  terminal', '#')
-#send_command('logging buffered 9999', '#')
-#send_command('exit', '#')
+send_command('logging buffered 7777', '#')
+send_command('exit', '#')
 send_command('show running-config | section logging', '#')
-print('\n>>>>')
-print(ssh_conn.before.decode('utf-8', 'ignore'))
-print('>>>>\n')
+

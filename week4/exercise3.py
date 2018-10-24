@@ -27,7 +27,7 @@ def send_command(cmd, expect):
     print PyExpect has timed out.
     '''
     try:
-        ssh_conn.sendline(cmd + '\n')
+        ssh_conn.sendline(cmd)
         ssh_conn.expect(expect)
         print(ssh_conn.before)
         #print(ssh_conn.after)
