@@ -5,6 +5,7 @@
 import jsonrpclib
 import ssl
 import pprint
+import six
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -15,15 +16,21 @@ password = 'admin'
 
 switch_url = 'https://{}:{}@{}:{}'.format(username, password, ip, port)
 switch_url = switch_url + '/command-api'
-print(switch_url)
+#print(switch_url)
 
 remote_connect = jsonrpclib.Server(switch_url)
-print(remote_connect)
+#print(remote_connect)
 
-response = remote_connect.runCmds(1, ['show interfaces'])
+interfaces = remote_connect.runCmds(1, ['show interfaces'])
 
-dict = response[0]
-pprint.pprint(dict)
+# Strip off unneeded dictionary
+interfaces = interfaces[0]
+interfaces = interfaces['interfaces']
 
-for interfaces, interface_name in dict.items():
-    pprint.pprint(interface_name)
+for interface in interfaces.keys():
+    print('')
+    print('Interface: ' + interface)
+    inOctets = interfaces[interface]['interfaceCounters']['inOctets']
+    print('inOctets: ' + str(inOctets))
+    outOctets = interfaces[interface]['interfaceCounters']['outOctets']
+    print('outOctets: ' + str(outOctets))
